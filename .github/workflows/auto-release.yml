@@ -64,14 +64,22 @@ jobs:
           git config --global user.name "$ACTOR"
           git config --global user.email "$ACTOR"@users.noreply.github.com
 
-      - name: Create release preparation branch
+      - name: Create version branch
         env:
           VERSION_NUMBER: ${{ github.event.inputs.version_number }}
           COMMIT_ID: ${{ github.event.inputs.commit_id }}
         working-directory: ./local_kernel
         run: |
-          git checkout -b "release-prep-$VERSION_NUMBER" "$COMMIT_ID"
+          git checkout -b "$VERSION_NUMBER" "$COMMIT_ID"
+          git push -u origin "$VERSION_NUMBER"
           echo "COMMIT_SHA_1=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      - name: Create release preparation branch
+        env:
+          VERSION_NUMBER: ${{ github.event.inputs.version_number }}
+        working-directory: ./local_kernel
+        run: |
+          git checkout -b "release-prep-$VERSION_NUMBER"
 
       - name: Update source files with version info
         env:
@@ -118,7 +126,7 @@ jobs:
         working-directory: ./local_kernel
         run: |
           PR_URL=$(gh pr create \
-            --base main \
+            --base "$VERSION_NUMBER" \
             --head "release-prep-$VERSION_NUMBER" \
             --title "[AUTO][RELEASE]: Release $VERSION_NUMBER" \
             --body "Automated release preparation for $VERSION_NUMBER. Updates version numbers in source files and manifest.yml.")
@@ -147,7 +155,7 @@ jobs:
         uses: actions/checkout@v4.1.1
         with:
           path: local_kernel
-          ref: main
+          ref: ${{ github.event.inputs.version_number }}
           fetch-depth: 0
 
       - name: Generate SBOM
@@ -161,10 +169,9 @@ jobs:
           VERSION_NUMBER: ${{ github.event.inputs.version_number }}
         working-directory: ./local_kernel
         run: |
-          git checkout -b "release-$VERSION_NUMBER"
           git add .
           git commit -m '[AUTO][RELEASE]: Update SBOM'
-          git push -u origin "release-$VERSION_NUMBER"
+          git push -u origin "$VERSION_NUMBER"
           echo "COMMIT_SHA_2=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Release
@@ -202,4 +209,3 @@ jobs:
           else
             echo "Skipping release-prep branch deletion — PR is still open (state: $PR_STATE)"
           fi
-          git push origin --delete "release-$VERSION_NUMBER" || true
