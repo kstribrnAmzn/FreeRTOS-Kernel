@@ -1,5 +1,5 @@
 /*
- * FreeRTOS Kernel <DEVELOPMENT BRANCH>
+ * FreeRTOS Kernel V12.1.2
  * license and copyright intentionally withheld to promote copying into user code.
  */
 
