@@ -89,7 +89,7 @@
  * task. h
  *
  * Type by which tasks are referenced.  For example, a call to xTaskCreate
- * returns (via a pointer parameter) an TaskHandle_t variable that can then
+ * returns (via a pointer parameter) a TaskHandle_t variable that can then
  * be used as a parameter to vTaskDelete to delete the task.
  *
  * \defgroup TaskHandle_t TaskHandle_t
@@ -579,7 +579,7 @@ typedef enum
  *
  * Example usage:
  * @code{c}
- * // Create an TaskParameters_t structure that defines the task to be created.
+ * // Create a TaskParameters_t structure that defines the task to be created.
  * static const TaskParameters_t xCheckTaskParameters =
  * {
  *  vATask,     // pvTaskCode - the function that implements the task.
@@ -677,7 +677,7 @@ typedef enum
  *
  * Example usage:
  * @code{c}
- * // Create an TaskParameters_t structure that defines the task to be created.
+ * // Create a TaskParameters_t structure that defines the task to be created.
  * // The StaticTask_t variable is only included in the structure when
  * // configSUPPORT_STATIC_ALLOCATION is set to 1.  The PRIVILEGED_DATA macro can
  * // be used to force the variable into the RTOS kernel's privileged data area.
@@ -1075,7 +1075,7 @@ BaseType_t xTaskDelayUntil( TickType_t * const pxPreviousWakeTime,
  *   // it itself.
  *   if( uxTaskPriorityGet( xHandle ) != tskIDLE_PRIORITY )
  *   {
- *       // The task has changed it's priority.
+ *       // The task has changed its priority.
  *   }
  *
  *   // ...
@@ -2157,7 +2157,7 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * configUSE_TRACE_FACILITY must be defined as 1 in FreeRTOSConfig.h for
  * uxTaskGetSystemState() to be available.
  *
- * uxTaskGetSystemState() populates an TaskStatus_t structure for each task in
+ * uxTaskGetSystemState() populates a TaskStatus_t structure for each task in
  * the system.  TaskStatus_t structures contain, among other things, members
  * for the task handle, task name, task priority, task state, and total amount
  * of run time consumed by the task.  See the TaskStatus_t structure
@@ -3307,7 +3307,7 @@ uint32_t ulTaskGenericNotifyTake( UBaseType_t uxIndexToWaitOn,
 /**
  * task. h
  * @code{c}
- * BaseType_t xTaskNotifyStateClearIndexed( TaskHandle_t xTask, UBaseType_t uxIndexToCLear );
+ * BaseType_t xTaskNotifyStateClearIndexed( TaskHandle_t xTask, UBaseType_t uxIndexToClear );
  *
  * BaseType_t xTaskNotifyStateClear( TaskHandle_t xTask );
  * @endcode
